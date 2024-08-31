@@ -1,0 +1,1 @@
+void f2_first(const char *message);
