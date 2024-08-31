@@ -1,0 +1,15 @@
+name: Restrict PRs to Main
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  restrict-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR source and target branches
+        if: github.event.pull_request.base.ref == 'main' && startsWith(github.event.pull_request.head.ref, 'feature/')
+        run: |
+          echo "Pull requests from feature branches to main are not allowed."
+          exit 1
