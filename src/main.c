@@ -2,7 +2,7 @@
 
 void myprintf(const char *message)
 {
-    printf("%s", message);
+    printf("message: %s", message);
 }
 
 int main(int argc, char **argv)
