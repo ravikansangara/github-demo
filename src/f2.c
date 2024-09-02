@@ -6,3 +6,8 @@ void f2_first(const char *message)
 {
     printf("f2_first: %s\n", message);
 }
+
+void f2_second(const char *message)
+{
+    printf("f2_second: %s\n", message);
+}
