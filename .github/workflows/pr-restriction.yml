@@ -1,6 +1,7 @@
 name: Restrict PRs to Main
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, edited, reopened]
 
