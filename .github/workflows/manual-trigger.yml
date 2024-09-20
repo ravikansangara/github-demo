@@ -1,0 +1,15 @@
+name: Manual Workflow
+
+on:
+  workflow_dispatch:  # This allows manual triggering from the UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      # Add your steps here
+      - name: Run a script
+        run: echo "This workflow was triggered manually."
