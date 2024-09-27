@@ -1,7 +1,20 @@
-name: Manual Workflow
+name: Parameterized Manual Workflow
 
 on:
-  workflow_dispatch:  # This allows manual triggering from the UI
+  workflow_dispatch:  # Enables manual triggering from the GitHub Actions UI
+    inputs:           # Define the input parameters here
+      username:
+        description: 'Name of the user'  # Description shown in the UI
+        required: true                   # Set to true if it's mandatory
+        default: 'Guest'                 # Default value if none is provided
+      environment:
+        description: 'Deployment environment' 
+        required: true
+        default: 'staging'
+        options:                         # You can also provide options
+          - development
+          - staging
+          - production
 
 jobs:
   build:
@@ -10,6 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      # Add your steps here
-      - name: Run a script
-        run: echo "This workflow was triggered manually."
+      - name: Show input values
+        run: |
+          echo "Hello, ${{ github.event.inputs.username }}!"
+          echo "Deploying to the ${{ github.event.inputs.environment }} environment."
