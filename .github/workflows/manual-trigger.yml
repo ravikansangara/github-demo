@@ -1,29 +1,58 @@
-name: Parameterized Manual Workflow
+name: Parameterized Workflow with All Input Types
 
 on:
-  workflow_dispatch:  # Enables manual triggering from the GitHub Actions UI
-    inputs:           # Define the input parameters here
+  workflow_dispatch:
+    inputs:
+      # String input
       username:
-        description: 'Name of the user'  # Description shown in the UI
-        required: true                   # Set to true if it's mandatory
-        default: 'Guest'                 # Default value if none is provided
+        description: 'Enter your username'
+        required: true
+        default: 'Guest'  # Default value
+
+      # Dropdown input (choice with options)
       environment:
-        description: 'Deployment environment' 
+        description: 'Select the deployment environment'
         required: true
         default: 'staging'
-        options:                         # You can also provide options
+        options:  # Dropdown list options
           - development
           - staging
           - production
 
+      # Boolean input (true/false)
+      run_tests:
+        description: 'Do you want to run tests?'
+        required: true
+        default: true  # Default value (can be true or false)
+
+      # Integer input
+      retries:
+        description: 'How many times should the job retry on failure?'
+        required: false  # Optional input
+        default: 3  # Default integer value
+
+      # Optional string input
+      version:
+        description: 'App version to deploy (optional, defaults to latest)'
+        required: false  # Optional input
+        default: 'latest'  # Default value
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Show input values
         run: |
-          echo "Hello, ${{ github.event.inputs.username }}!"
-          echo "Deploying to the ${{ github.event.inputs.environment }} environment."
+          echo "Username: ${{ github.event.inputs.username }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Run tests: ${{ github.event.inputs.run_tests }}"
+          echo "Retries: ${{ github.event.inputs.retries }}"
+          echo "Version: ${{ github.event.inputs.version }}"
+
+      # Example of conditional logic based on boolean input
+      - name: Run tests
+        if: ${{ github.event.inputs.run_tests == 'true' }}  # Run only if tests are enabled
+        run: echo "Running tests..."
